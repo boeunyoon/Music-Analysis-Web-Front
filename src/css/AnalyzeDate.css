@@ -1,0 +1,71 @@
+.a-date-title{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+.chart-wrapper{
+    background-color: rgb(203, 212, 234);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.chart-row{
+    margin-top: 30px;
+}
+
+.chart-wrapper1{
+    background-color: rgb(219, 203, 234);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.chart-wrapper2{
+    background-color: rgb(219, 234, 203);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.chart-wrapper3{
+    background-color: rgb(234, 222, 203);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.chart-wrapper4{
+    background-color: rgb(234, 203, 203);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+.chart-wrapper5{
+    background-color: rgb(203, 234, 234);
+    padding: 20px;
+    border-radius: 10px;
+    margin-right: 20px;
+}
+
+.chart-name{
+    text-align: center;
+}
+
+.modal-datepick{
+    border-radius: 5px;
+    width: 200px;
+}
+
+.tab-wrraper{
+    padding: 1000px;
+}
+
+.calender{
+    margin-top: 0px;
+    margin-left: 100px;
+}
+
+.tab-item{
+    background-color: rgb(0, 149, 255);
+}

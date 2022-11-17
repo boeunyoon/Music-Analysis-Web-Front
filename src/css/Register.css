@@ -1,0 +1,13 @@
+.register-form{
+    background-color: rgb(234, 241, 255);
+    padding: 70px;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.register-string{
+    text-align: center;
+    margin-top: 50px;
+}

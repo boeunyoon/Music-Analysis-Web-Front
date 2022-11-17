@@ -1,0 +1,21 @@
+.login-form{
+    background-color: rgb(234, 241, 255);
+    padding: 70px;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 300px;
+    margin-right: 300px;
+    padding-bottom: 100px;
+}
+.login-string{
+    text-align: center;
+    margin-top: 80px;
+}
+.login-button-wrapper{
+    text-align: center;
+    margin-top: 30px;
+}
+.login-button{
+    width: 200px;
+    margin-bottom: 15px;
+}

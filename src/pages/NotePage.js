@@ -38,7 +38,11 @@ const NotePage = () => {
           </h3>
         </h3>
       </div>
-          <textarea onChange={(e)=>{setNote({...note, 'body': e.target.value})}} defaultValue={note?.body}></textarea>
+          <textarea 
+          onChange={(e)=>{setNote({...note, 'body': e.target.value})}} 
+          defaultValue={note?.body}
+          style={{width:'500px', height:'200px'}}
+          />
     </div>
   )
 }
