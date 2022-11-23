@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ECharts, { EChartsReactProps } from 'echarts-for-react';
 
-export const Barchart1 = (props) => {
+export const PopularityChart = (props) => {
   useEffect(()=>{
     setOptions(options)
   },[])
@@ -22,7 +22,7 @@ export const Barchart1 = (props) => {
       series: [
         {
           barWidth: '20%',
-          data: [props.averageData.tempo, props.averageData1.tempo],
+          data: [props.averageData.popularity, props.averageData1.popularity],
           type: 'bar'
         }
       ]

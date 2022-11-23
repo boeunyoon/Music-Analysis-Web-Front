@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import DatePicker from 'react-datepicker'
@@ -11,10 +11,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
 import Tab from 'react-bootstrap/Tab';
 import Nav from 'react-bootstrap/Nav';
 import { Barchart3 } from '../components/Barchart3';
+import { PopularityChart } from '../components/PopularityChart';
+import { EtcChart } from '../components/EtcChart';
 const AnalyzeDate = () => {
     const [startDate2, setStartDate2] = useState(new Date());
     const [endDate2, setEndDate2] = useState(null);
@@ -26,6 +29,7 @@ const AnalyzeDate = () => {
     const [endDateValue2, setendDateValue2] = useState('')
     const [SelectDate, setSelectDate] = useState(false)
     const [Loading, setLoading] = useState(false)
+    const [Loading1, setLoading1] = useState(false)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -33,6 +37,7 @@ const AnalyzeDate = () => {
     const handleClose1 = () => setShow1(false);
     const handleShow1 = () => setShow1(true);
     const [SelectDateModal, setSelectDateModal] = useState(false)
+    const [keyword, setKeyword] = useState()
     const [average, setAverage] = useState({
         acousticness:'',
         danceability:'',
@@ -60,6 +65,20 @@ const AnalyzeDate = () => {
         speechiness:'',
         tempo:'',
         valence:''
+    })
+    const [keywordAverage, setKeywordAverage] = useState({
+      acousticness:'',
+      danceability:'',
+      duration_ms:'',
+      energy:'',
+      instrumentalness:'',
+      liveness:'',
+      loudness:'',
+      mode:'',
+      popularity:'',
+      speechiness:'',
+      tempo:'',
+      valence:''
     })
       useEffect(() => {
         dateToString1(startDate1)
@@ -95,7 +114,7 @@ const AnalyzeDate = () => {
         }
       }
       let getAverage1 = async(e) => {
-        setLoading(true)
+        setLoading1(true)
         let response = await fetch('http://127.0.0.1:8000/spotify/get-status-period', {
             method: 'POST',
             headers: {
@@ -114,12 +133,37 @@ const AnalyzeDate = () => {
             console.log(obj)
             setSelectDate(true)
             setTimeout(function() {
-              setLoading(false)
+              setLoading1(false)
             }, 2000);
         }else{
             alert('Login fail')
         }
       }
+      let getKeywordAverage = async(e) => {
+        let response = await fetch('http://127.0.0.1:8000/spotify/get-status-keyword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([{
+                'keyword': keyword
+            }])
+        })
+        let data = await response.json()
+        const obj = JSON.parse(data)
+        console.log(obj.averge_status)
+        setKeywordAverage(obj.averge_status)
+        if(response.status === 200){
+            console.log('keyword',obj)
+        }else{
+            alert('Login fail')
+        }
+      }
+      const onChangeKeyword = useCallback((e) => {
+        setKeyword(e.target.value)
+        console.log('keyword',keyword)
+     },[]) 
+     console.log('key',keyword)
       const dateToString1 = (date) => {
         setDateValue1(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
       }
@@ -135,7 +179,6 @@ const AnalyzeDate = () => {
         if(date != null){
             setendDateValue2(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
         }
-        
       }
       const getDayName = (date) => {
         return date.toLocaleDateString('ko-KR', {
@@ -150,10 +193,6 @@ const AnalyzeDate = () => {
           , 0
           , 0));
       }
-      console.log(dateValue1)
-      console.log(endDateValue1)
-      console.log(dateValue2)
-      console.log(endDateValue2)
       const onChange = (dates) => {
         const [start2, end2] = dates;
         setStartDate2(start2);
@@ -164,8 +203,6 @@ const AnalyzeDate = () => {
         setStartDate1(start1);
         setEndDate1(end1);
       };
-      console.log('start',startDate2)
-      console.log('end',endDate2)
   return (
     <div>
         <h2 className='a-date-title'>Analysis by date</h2>
@@ -204,10 +241,10 @@ const AnalyzeDate = () => {
             }}>Submit</Button>
             </Col>
         </Row>
-        {Loading && <div style={{display : 'flex', justifyContent:'center', marginTop:'30%'}}>
+        {(Loading || Loading1) && <div style={{display : 'flex', justifyContent:'center', marginTop:'20%'}}>
            <Spinner animation="border" variant="primary" style={{width:'40px', height: '40px'}}/>
           </div>}
-        {!Loading && SelectDate &&
+        {!Loading && !Loading1 && SelectDate &&
           <div>
             <Row className='chart-row'>
                 <Col className='chart-wrapper'>
@@ -215,7 +252,7 @@ const AnalyzeDate = () => {
                     <h4 className='chart-name'>Valence Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper1'>
-                    <Barchart1 averageData={average} averageData1={average1}/>
+                    <Barchart1 averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
                     <h4 className='chart-name'>Tempo Analysis Chart</h4>
                 </Col>
             </Row>
@@ -225,17 +262,17 @@ const AnalyzeDate = () => {
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper3'>
-                    <Barchart3 averageData={average} averageData1={average1}/>
-                    <h4 className='chart-name'>Loudness Analysis Chart</h4>
+                    <Barchart3 averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <h4 className='chart-name'>Mode Analysis Chart</h4>
                 </Col>
             </Row>
             <Row className='chart-row'>
                 <Col className='chart-wrapper4'>
-                    <Barchart averageData={average} averageData1={average1}/>
-                    <h4 className='chart-name'>Analysis Chart</h4>
+                    <PopularityChart averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <h4 className='chart-name'>Popularity Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper5'>
-                    <Barchart averageData={average} averageData1={average1}/>
+                    <EtcChart averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
             </Row>
@@ -243,7 +280,7 @@ const AnalyzeDate = () => {
         }
         <Modal show={show} onHide={handleClose} className='modal-container' size='lg'>
         <Modal.Header closeButton>
-          <Modal.Title>Select Date</Modal.Title>
+          <Modal.Title>Select Date & Keyword</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Tab.Container id="left-tabs-example" defaultActiveKey="first" className='tab-wrraper'>
@@ -254,7 +291,7 @@ const AnalyzeDate = () => {
                     <Nav.Link eventKey="first">Date</Nav.Link>
                   </Nav.Item>
                   <Nav.Item variant="secondary">
-                    <Nav.Link eventKey="second">Key word</Nav.Link>
+                    <Nav.Link eventKey="second">Keyword</Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Col>
@@ -303,7 +340,8 @@ const AnalyzeDate = () => {
                   </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
-                    <div>aaaaaaa</div>
+                    <input name='keywordinput' onChange={onChangeKeyword}/>
+                    <Button onClick={getKeywordAverage}>Search</Button>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -322,46 +360,20 @@ const AnalyzeDate = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+
+
+{/* -------------------------------------------------------------------------------------- */}
+
+
+
+
       <Modal show={show1} onHide={handleClose1} size='lg'>
         <Modal.Header closeButton>
-          <Modal.Title>Select Date</Modal.Title>
+          <Modal.Title>Select Date & Keyword</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        {/* <Row>
-            <Col>
-            <DatePicker
-              className='modal-datepick'
-              selected={startDate1}
-              onChange={(date) => setStartDate1(date)}
-              selectsStart
-              startDate={startDate1}
-              endDate={endDate1}
-              dateFormat="yyyy-MM-dd"
-                    dayClassName={date =>
-                      getDayName(createDate(date)) === '토' ? "saturday"
-                    :
-                      getDayName(createDate(date)) === '일' ? "sunday" : undefined
-                  }
-            />
-            </Col>
-            <Col>
-            <DatePicker
-              className='modal-datepick'
-              selected={endDate1}
-              onChange={(date) => setEndDate1(date)}
-              selectsEnd
-              startDate={startDate1}
-              endDate={endDate1}
-              minDate={startDate1}
-              dateFormat="yyyy-MM-dd"
-                    dayClassName={date =>
-                      getDayName(createDate(date)) === '토' ? "saturday"
-                    :
-                      getDayName(createDate(date)) === '일' ? "sunday" : undefined
-                  }
-            />
-            </Col>
-        </Row> */}
         <Tab.Container id="left-tabs-example" defaultActiveKey="first" className='tab-wrraper'>
             <Row>
               <Col sm={3}>
@@ -370,7 +382,7 @@ const AnalyzeDate = () => {
                     <Nav.Link eventKey="first">Date</Nav.Link>
                   </Nav.Item>
                   <Nav.Item variant="secondary">
-                    <Nav.Link eventKey="second">Key word</Nav.Link>
+                    <Nav.Link eventKey="second">Keyword</Nav.Link>
                   </Nav.Item>
                 </Nav>
               </Col>
@@ -419,7 +431,17 @@ const AnalyzeDate = () => {
                   </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
-                    <div>aaaaaaa</div>
+                    <Dropdown variant="secondary">
+                      <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Dropdown Button
+                        </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    <Button>Search</Button>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ECharts, { EChartsReactProps } from 'echarts-for-react';
 
-export const Barchart2 = (props) => {
+export const EtcChart = (props) => {
   useEffect(()=>{
     setOptions(options)
   },[])
@@ -21,23 +21,25 @@ export const Barchart2 = (props) => {
       },
       series: [
         {
-          barWidth: '20%',
-          data: [props.averageData.energy*10, props.averageData1.energy*10],
+          data: [props.averageData.liveness, props.averageData1.liveness],
           type: 'bar',
-          name: 'energy'
+          name: 'liveness'
         },
         {
-          barWidth: '20%',
-          data: [props.averageData.danceability*10, props.averageData.danceability*10],
+          data: [props.averageData.acousticness, props.averageData.acousticness],
           type: 'bar',
-          name:'danceability'
+          name:'acousticness'
         },
         {
-          barWidth: '20%',
-          data: [props.averageData.loudness, props.averageData.loudness],
+          data: [props.averageData.instrumentalness, props.averageData.instrumentalness],
           type: 'bar',
-          name:'loudness'
-        }
+          name:'instrumentalness'
+        },
+        {
+            data: [props.averageData.speechiness, props.averageData.speechiness],
+            type: 'bar',
+            name:'speechiness'
+          }
       ]
 	});	
 

@@ -34,7 +34,7 @@ function NavbarContainer() {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="/" style={{textShadow: '2px 2px 2px gray'}}>MAW<MdOutlineMusicNote size='25px'/></Navbar.Brand>
+        <Navbar.Brand href="/" style={{textShadow: '2px 2px 2px gray'}}><MdOutlineMusicNote size='25px'/>MAW</Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link href="#/login">Login</Nav.Link>
           <Nav.Link href="#/register">Sign up</Nav.Link>
@@ -42,6 +42,7 @@ function NavbarContainer() {
               <NavDropdown.Item href="#/analyzeonemusic">Analysis One Music</NavDropdown.Item>
               <NavDropdown.Item href="#/analyzeonemusictwo">Analysis Two Music</NavDropdown.Item>
               <NavDropdown.Item href="#/analyzedate">Analysis Date</NavDropdown.Item>
+              <NavDropdown.Item href="#/recommend">Recommendation</NavDropdown.Item>
           </NavDropdown>
         </Nav>
         {login ?<div><Link style={{color:'white'}} to = "/profile">Welcome {username}</Link> </div>: null}
