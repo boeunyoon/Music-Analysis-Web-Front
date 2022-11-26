@@ -43,6 +43,7 @@ function NavbarContainer() {
               <NavDropdown.Item href="#/analyzeonemusictwo">Analysis Two Music</NavDropdown.Item>
               <NavDropdown.Item href="#/analyzedate">Analysis Date</NavDropdown.Item>
               <NavDropdown.Item href="#/recommend">Recommendation</NavDropdown.Item>
+              <NavDropdown.Item href="#/searchartist">Analysis artist</NavDropdown.Item>
           </NavDropdown>
         </Nav>
         {login ?<div><Link style={{color:'white'}} to = "/profile">Welcome {username}</Link> </div>: null}

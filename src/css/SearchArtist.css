@@ -1,0 +1,38 @@
+.artist-title{
+    text-align: center;
+    margin-top: 45px;
+}
+.artist-input{
+    margin-left: 300px;
+    margin-top: 50px;
+}
+
+.card-text{
+    text-align: center;
+}
+
+.genre-style{
+    display: flex;
+}
+.toptrack-table{
+    margin-top: 20px;
+}
+
+.artist-analysis{
+    margin-top: 30px;
+}
+.artisttoptrack-title{
+    margin-top: 10px;
+}
+
+.relationartist-wrapper{
+    margin-top: 20px;
+}
+
+.artist-card{
+    margin-right: 50px;
+}
+
+.artistchart-title{
+    margin-top: '20px'
+}

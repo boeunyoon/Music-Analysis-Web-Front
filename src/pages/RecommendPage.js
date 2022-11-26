@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Alert from 'react-bootstrap/Alert';
 import '../css/RecommendPage.css'
 const RecommendPage = () => {
   const [music, setMusic] = useState('')
@@ -146,12 +147,18 @@ const RecommendPage = () => {
       <div>
       <Row>
         <h3 className='recommend-title'>Recommended music</h3>
-        <div className='recommend-musicinfo'>
+        {/* <div className='recommend-musicinfo'>
           <h5>Title: </h5>
           <p style={{marginLeft: '10px'}}>{recommendTitle}</p> 
           <h5 style={{marginLeft: '10px'}}>Artist: </h5> 
           <p style={{marginLeft: '10px'}}>{recommendArtist}</p>
-        </div>
+        </div> */}
+        <Alert variant='primary' className='recommend-musicinfo'>
+          <h5>Title: </h5>
+          <p style={{marginLeft: '10px'}}>{recommendTitle}</p> 
+          <h5 style={{marginLeft: '10px'}}>Artist: </h5> 
+          <p style={{marginLeft: '10px'}}>{recommendArtist}</p>
+        </Alert>
       </Row>
       <Row style={{marginTop: '30px'}}>
         <Table striped bordered hover variant="dark">

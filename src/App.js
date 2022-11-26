@@ -17,6 +17,7 @@ import IsAlreadyLogin from './utils/IsAlreadyLogin'
 import { AnalyzeMusicTwo } from './pages/AnalyzeMusicTwo';
 import AnalyzeDate from './pages/AnalyzeDate';
 import RecommendPage from './pages/RecommendPage';
+import SearchArtistPage from './pages/SearchArtistPage';
 function App() {
   return (
       <HashRouter>
@@ -42,6 +43,7 @@ function App() {
                 <Route path='/analyzeonemusic' element={<AnalyzeMusic/>}/>
                 <Route path='/analyzedate' element={<AnalyzeDate/>}/>
                 <Route path='/recommend' element={<RecommendPage/>}/>
+                <Route path='/searchartist' element={<SearchArtistPage/>}/>
             </Routes>
           </AuthProvider>
           </div>

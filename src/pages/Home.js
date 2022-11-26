@@ -126,7 +126,7 @@ const Home = (props) => {
                 ))}
         </ul> */}
        <div style={{marginTop:'30px'}}>
-        {Loading && <div style={{display : 'flex', justifyContent:'center', marginTop:'30%'}}>
+        {Loading && <div style={{display : 'flex', justifyContent:'center', marginTop:'20%'}}>
            <Spinner animation="border" variant="primary" style={{width:'40px', height: '40px'}}/>
           </div>}
         {!Loading && 
