@@ -11,14 +11,22 @@ import "react-datepicker/dist/react-datepicker.css";
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
 import Tab from 'react-bootstrap/Tab';
 import Nav from 'react-bootstrap/Nav';
+import Select from 'react-select';
 import { Barchart3 } from '../components/Barchart3';
 import { PopularityChart } from '../components/PopularityChart';
 import { EtcChart } from '../components/EtcChart';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 const AnalyzeDate = () => {
+    const keywordData = [
+     { value: "2022-10", label: "2022-10" },
+    ] 
+    const [toggleChecked, setToggleChecked] = useState(false);
+    const [toggleChecked1, setToggleChecked1] = useState(false);
+    const [selectKeyword, setSelectKeyword] = useState(keywordData[0]);
+    const [selectKeyword1, setSelectKeyword1] = useState(keywordData[0]);
     const [startDate2, setStartDate2] = useState(new Date());
     const [endDate2, setEndDate2] = useState(null);
     const [startDate1, setStartDate1] = useState(new Date());
@@ -28,6 +36,7 @@ const AnalyzeDate = () => {
     const [dateValue2, setDateValue2] = useState('')
     const [endDateValue2, setendDateValue2] = useState('')
     const [SelectDate, setSelectDate] = useState(false)
+    const [SelectDate1, setSelectDate1] = useState(false)
     const [Loading, setLoading] = useState(false)
     const [Loading1, setLoading1] = useState(false)
     const [show, setShow] = useState(false);
@@ -66,20 +75,6 @@ const AnalyzeDate = () => {
         tempo:'',
         valence:''
     })
-    const [keywordAverage, setKeywordAverage] = useState({
-      acousticness:'',
-      danceability:'',
-      duration_ms:'',
-      energy:'',
-      instrumentalness:'',
-      liveness:'',
-      loudness:'',
-      mode:'',
-      popularity:'',
-      speechiness:'',
-      tempo:'',
-      valence:''
-    })
       useEffect(() => {
         dateToString1(startDate1)
         dateToStringEnd1(endDate1)
@@ -108,7 +103,7 @@ const AnalyzeDate = () => {
             setSelectDate(true)
             setTimeout(function() {
               setLoading(false)
-            }, 2000);
+            }, 1000);
         }else{
             alert('Login fail')
         }
@@ -127,14 +122,13 @@ const AnalyzeDate = () => {
         })
         let data = await response.json()
         const obj = JSON.parse(data)
-        setAverage(obj.averge_status)
+        setAverage1(obj.averge_status)
         console.log('2',average1)
         if(response.status === 200){
-            console.log(obj)
-            setSelectDate(true)
+            setSelectDate1(true)
             setTimeout(function() {
               setLoading1(false)
-            }, 2000);
+            }, 1000);
         }else{
             alert('Login fail')
         }
@@ -146,24 +140,47 @@ const AnalyzeDate = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify([{
-                'keyword': keyword
+                'keyword': selectKeyword.value
             }])
         })
         let data = await response.json()
         const obj = JSON.parse(data)
         console.log(obj.averge_status)
-        setKeywordAverage(obj.averge_status)
         if(response.status === 200){
-            console.log('keyword',obj)
+            setAverage(obj.averge_status)
+            setSelectDate(true)
+            console.log(average)
+            setTimeout(function() {
+              setLoading(false)
+            }, 1000);
         }else{
             alert('Login fail')
         }
       }
-      const onChangeKeyword = useCallback((e) => {
-        setKeyword(e.target.value)
-        console.log('keyword',keyword)
-     },[]) 
-     console.log('key',keyword)
+      let getKeywordAverage1 = async(e) => {
+        let response = await fetch('http://127.0.0.1:8000/spotify/get-status-keyword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([{
+                'keyword': selectKeyword.value
+            }])
+        })
+        let data = await response.json()
+        const obj = JSON.parse(data)
+        console.log(obj.averge_status)
+        if(response.status === 200){
+            setAverage1(obj.averge_status)
+            setSelectDate1(true)
+            console.log(average)
+            setTimeout(function() {
+              setLoading1(false)
+            }, 1000);
+        }else{
+            alert('Login fail')
+        }
+      }
       const dateToString1 = (date) => {
         setDateValue1(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
       }
@@ -236,48 +253,117 @@ const AnalyzeDate = () => {
             </Col>
             <Col xl={2} md={2}>
               <Button onClick={() =>  {
-                getAverage() 
-                getAverage1()
+                if(toggleChecked){
+                  getKeywordAverage()
+                  setToggleChecked(false)
+                }else{
+                  getAverage() 
+                }
+                if(toggleChecked1){
+                  getKeywordAverage1()
+                  setToggleChecked(false)
+                }else{
+                  getAverage1() 
+                }
             }}>Submit</Button>
             </Col>
         </Row>
         {(Loading || Loading1) && <div style={{display : 'flex', justifyContent:'center', marginTop:'20%'}}>
            <Spinner animation="border" variant="primary" style={{width:'40px', height: '40px'}}/>
           </div>}
-        {!Loading && !Loading1 && SelectDate &&
+        {!Loading && !Loading1 && SelectDate && SelectDate1 &&
           <div>
             <Row className='chart-row'>
                 <Col className='chart-wrapper'>
-                    <Barchart averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <Barchart 
+                      averageData={average} 
+                      averageData1={average1} 
+                      dateval={dateValue2} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval1={dateValue1} 
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                    />
                     <h4 className='chart-name'>Valence Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper1'>
-                    <Barchart1 averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <Barchart1 
+                      averageData={average} 
+                      averageData1={average1} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval={dateValue2} 
+                      dateval1={dateValue1}
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                    />
                     <h4 className='chart-name'>Tempo Analysis Chart</h4>
                 </Col>
             </Row>
             <Row className='chart-row'>
                 <Col className='chart-wrapper2'>
-                    <Barchart2 averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <Barchart2 
+                      averageData={average} 
+                      averageData1={average1} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval={dateValue2} 
+                      dateval1={dateValue1}
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                  />
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper3'>
-                    <Barchart3 averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <Barchart3 
+                      averageData={average} 
+                      averageData1={average1} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval={dateValue2} 
+                      dateval1={dateValue1}
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                  />
                     <h4 className='chart-name'>Mode Analysis Chart</h4>
                 </Col>
             </Row>
             <Row className='chart-row'>
                 <Col className='chart-wrapper4'>
-                    <PopularityChart averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <PopularityChart 
+                      averageData={average} 
+                      averageData1={average1} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval={dateValue2} 
+                      dateval1={dateValue1}
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                    />
                     <h4 className='chart-name'>Popularity Analysis Chart</h4>
                 </Col>
                 <Col className='chart-wrapper5'>
-                    <EtcChart averageData={average} averageData1={average1} dateval={dateValue2} dateval1={dateValue1}/>
+                    <EtcChart 
+                      averageData={average} 
+                      averageData1={average1} 
+                      endDateValue ={endDateValue2}
+                      endDateValue1 = {endDateValue1}
+                      dateval={dateValue2} 
+                      dateval1={dateValue1}
+                      toggleChecked={toggleChecked}
+                      toggleChecked1={toggleChecked1}
+                    />
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
             </Row>
           </div>
         }
+
+        {/* -------------------------------------------------------------------------------------------------------- */}
+
+
+        
         <Modal show={show} onHide={handleClose} className='modal-container' size='lg'>
         <Modal.Header closeButton>
           <Modal.Title>Select Date & Keyword</Modal.Title>
@@ -340,8 +426,27 @@ const AnalyzeDate = () => {
                   </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
-                    <input name='keywordinput' onChange={onChangeKeyword}/>
-                    <Button onClick={getKeywordAverage}>Search</Button>
+                    <Row>
+                      <Col lg='8'>
+                        <Select options={keywordData}
+                         onChange={setSelectKeyword}
+                         isClearable
+                         defaultValue={keywordData[0]} />
+                      </Col>
+                      <Col>
+                        <ToggleButton
+                          className="mb-2"
+                          id="toggle-check"
+                          type="checkbox"
+                          variant="outline-primary"
+                          checked={toggleChecked}
+                          value="1"
+                          onChange={(e) => setToggleChecked(e.currentTarget.checked)}
+                        >
+                          Select
+                        </ToggleButton>
+                      </Col>
+                    </Row>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>
@@ -431,17 +536,27 @@ const AnalyzeDate = () => {
                   </Row>
                   </Tab.Pane>
                   <Tab.Pane eventKey="second">
-                    <Dropdown variant="secondary">
-                      <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Dropdown Button
-                        </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                    <Button>Search</Button>
+                    <Row>
+                      <Col lg='8'>
+                        <Select options={keywordData}
+                         onChange={setSelectKeyword1}
+                         isClearable
+                         defaultValue={keywordData[0]} />
+                      </Col>
+                      <Col>
+                        <ToggleButton
+                          className="mb-2"
+                          id="toggle-check"
+                          type="checkbox"
+                          variant="outline-primary"
+                          checked={toggleChecked1}
+                          value="1"
+                          onChange={(e) => setToggleChecked1(e.currentTarget.checked)}
+                        >
+                          Select
+                        </ToggleButton>
+                      </Col>
+                    </Row>
                   </Tab.Pane>
                 </Tab.Content>
               </Col>

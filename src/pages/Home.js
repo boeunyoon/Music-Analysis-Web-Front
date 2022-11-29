@@ -64,7 +64,7 @@ const Home = (props) => {
         let data = await response.json()
         const obj = JSON.parse(data)
         setTop100MusicRank(obj.rank)
-        console.log(obj.rank.images)
+        console.log(obj.rank)
         if(response.status === 200){
             console.log(top100)
             setTimeout(function() {

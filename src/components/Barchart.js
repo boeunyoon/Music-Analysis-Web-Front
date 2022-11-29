@@ -39,8 +39,8 @@ export const Barchart = (props) => {
             show: false
           },
           data: [
-            { value: props.averageData.valence, name: props.dateval },
-            { value: props.averageData1.valence, name: props.dateval1},
+            { value: props.averageData.valence, name: props.dateval+' ~ '+props.endDateValue },
+            { value: props.averageData1.valence, name: props.dateval1+' ~ '+props.endDateValue1},
           ]
 	    }
 	  ]
