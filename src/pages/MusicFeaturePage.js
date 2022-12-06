@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { FeatureRadarChart } from '../components/SearchFeatureChart/FeatureRadarChart';
 import { FeatureBarChart } from '../components/SearchFeatureChart/FeatureBarChart';
+import { SearchFeatureRadar } from '../components/SearchFeatureChart/SearchFeatureRadar';
 import '../css/MusicFeaturePage.css'
 const MusicFeaturePage = () => {
     const [acousticnessValue, setAcousticnessValue] = useState(50)
@@ -14,7 +15,6 @@ const MusicFeaturePage = () => {
     const [livenessValue, setLivenessValue] = useState(50)
     const [valenceValue, setValenceValue] = useState(50)
     const [speechinessValue, setSpeechinessValue] = useState(50)
-    const [popularityValue, setPopularityValue] = useState(50)
     const [search, setSearch] = useState(false)
     const [searchData, setSearchData] = useState([{
       title:'',
@@ -42,15 +42,15 @@ const MusicFeaturePage = () => {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify([{
-              "name": "acousticness", "input": acousticnessValue*0.01,
-              "name": "danceability", "input":danceabilityValue*0.01 ,
-              "name": "energy", "input": energyValue*0.01,
-              "name": "liveness", "input": livenessValue*0.01,
-              "name": "valence", "input": valenceValue*0.01,
-              "name": "speechiness", "input": speechinessValue*0.01,
+          body: JSON.stringify([
+             {"name": "acousticness", "input": acousticnessValue*0.01},
+             { "name": "danceability", "input":danceabilityValue*0.01} ,
+             { "name": "energy", "input": energyValue*0.01},
+              {"name": "liveness", "input": livenessValue*0.01},
+             { "name": "valence", "input": valenceValue*0.01},
+             { "name": "speechiness", "input": speechinessValue*0.01},
               //"name": "popularity", "input": popularityValue,
-          }])
+          ])
       })
       let data = await response.json()
       const obj = JSON.parse(data)
@@ -161,6 +161,7 @@ const MusicFeaturePage = () => {
                     <Row>
                       <Col>
                         <FeatureRadarChart searchData={searchData} i={index}/>
+                        {/* <SearchFeatureRadar searchData={searchData} i={index}/> */}
                       </Col>
                       <Col>
                         <FeatureBarChart searchData={searchData} i = {index}/>

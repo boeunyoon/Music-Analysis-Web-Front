@@ -19,12 +19,12 @@ export const FeatureRadarChart = (props) => {
       radar: {
         // shape: 'circle',
         indicator: [
-          { name: 'acousticness'},
-          { name: 'danceability'},
-          { name: 'energy'},
-          { name: 'liveness'},
-          { name: 'valence'},
-          { name: 'speechiness'}
+          { name: 'acousticness', max: 100},
+          { name: 'danceability', max: 100},
+          { name: 'energy', max: 100},
+          { name: 'liveness', max: 100},
+          { name: 'valence', max: 100},
+          { name: 'speechiness', max: 100}
         ]
       },
       series: [

@@ -192,6 +192,7 @@ export const AnalyzeMusicTwo = () => {
             <Table striped bordered hover>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Title</th>
                   <th>Artist</th>
                 </tr>
@@ -203,6 +204,7 @@ export const AnalyzeMusicTwo = () => {
                 </tr> */}
                 {musicData.map((data, index) => (
                   <tr key={index} onClick={()=>clicklist(index)}>
+                    <th><Form.Check type='checkbox'/></th>
                     <th>{data.title}</th>
                     <th>{data.artist}</th>
                   </tr>
@@ -249,6 +251,7 @@ export const AnalyzeMusicTwo = () => {
             <Table striped bordered hover>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Title</th>
                   <th>Artist</th>
                 </tr>
@@ -260,6 +263,7 @@ export const AnalyzeMusicTwo = () => {
                 </tr> */}
                 {musicData.map((data, index) => (
                   <tr key={index} onClick={()=>clicklist2(index)}>
+                    <th><Form.Check type='checkbox'/></th>
                     <th>{data.title}</th>
                     <th>{data.artist}</th>
                   </tr>

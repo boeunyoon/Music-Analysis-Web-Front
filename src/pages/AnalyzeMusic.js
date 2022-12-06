@@ -172,6 +172,7 @@ const AnalyzeMusic = (props) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Title</th>
                   <th>Artist</th>
                 </tr>
@@ -186,6 +187,7 @@ const AnalyzeMusic = (props) => {
                     key={index} 
                     onClick={()=>clicklist(index)}
                   >
+                    <th><Form.Check type='checkbox'/></th>
                     <th>{data.title}</th>
                     <th>{data.artist}</th>
                   </tr>

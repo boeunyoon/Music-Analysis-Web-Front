@@ -327,7 +327,7 @@ const SearchArtistPage = () => {
                        key={index} 
                        onClick={()=>clicklist(index)}
                      >
-                       <th>{index +1}</th>
+                       <th><Form.Check type='checkbox'/></th>
                        <th>{data.name}</th>
                      </tr>
                    ))}

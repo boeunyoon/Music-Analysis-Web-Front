@@ -11,7 +11,7 @@ export const FeatureBarChart = (props) => {
       },
       xAxis: {
         type: 'category',
-        data: ['tempo', 'duration_ms', 'popularity']
+        data: ['tempo', 'running time', 'popularity']
       },
       yAxis: {
         type: 'value'
