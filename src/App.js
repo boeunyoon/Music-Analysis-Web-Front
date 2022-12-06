@@ -18,6 +18,7 @@ import { AnalyzeMusicTwo } from './pages/AnalyzeMusicTwo';
 import AnalyzeDate from './pages/AnalyzeDate';
 import RecommendPage from './pages/RecommendPage';
 import SearchArtistPage from './pages/SearchArtistPage';
+import MusicFeaturePage from './pages/MusicFeaturePage';
 function App() {
   return (
       <HashRouter>
@@ -44,6 +45,7 @@ function App() {
                 <Route path='/analyzedate' element={<AnalyzeDate/>}/>
                 <Route path='/recommend' element={<RecommendPage/>}/>
                 <Route path='/searchartist' element={<SearchArtistPage/>}/>
+                <Route path='/musicfeature' element={<MusicFeaturePage/>}/>
             </Routes>
           </AuthProvider>
           </div>
