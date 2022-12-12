@@ -162,6 +162,7 @@ const AnalyzeDate = () => {
             console.log('2',average)
             setTimeout(function() {
               setLoading(false)
+              setendDateValue2('')
               console.log(selectKeyword.value)
             }, 1000);
         }else{
@@ -188,6 +189,7 @@ const AnalyzeDate = () => {
             console.log(average)
             setTimeout(function() {
               setLoading1(false)
+              setendDateValue1('')
             }, 1000);
         }else{
             alert('Login fail')
@@ -288,6 +290,7 @@ const AnalyzeDate = () => {
                 }else{
                   getAverage1() 
                 }
+                
             }}>Submit</Button>
             </Col>
         </Row>

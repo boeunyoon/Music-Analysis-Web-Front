@@ -14,7 +14,7 @@ export const EtcChart = (props) => {
     },
     xAxis: {
         type: 'category',
-        data: [props.dateval+' ~ '+props.endDateValue, props.dateval1+' ~ '+props.endDateValue1]
+        data: [props.dateval+' '+props.endDateValue, props.dateval1+' '+props.endDateValue1]
       },
       yAxis: {
         type: 'value'

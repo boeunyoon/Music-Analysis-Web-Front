@@ -5,6 +5,9 @@ export const Barchart1 = (props) => {
   useEffect(()=>{
     setOptions(options)
   },[])
+  console.log(props.endDateValue1)
+  console.log(props.dateval1)
+  let date1 = props.dateval1 + props.endDateValue1
   const [options, setOptions] = useState({
     tooltip: {
         trigger: 'axis',
@@ -14,7 +17,7 @@ export const Barchart1 = (props) => {
       },
     xAxis: {
         type: 'category',
-        data: [props.dateval+' ~ '+props.endDateValue, props.dateval1+' ~ '+props.endDateValue1]
+        data: [props.dateval+' '+props.endDateValue, props.dateval1 +' '+ props.endDateValue1]
       },
       yAxis: {
         type: 'value'
