@@ -22,7 +22,14 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 const AnalyzeDate = () => {
     const keywordData = [
      { value: "2022-10", label: "2022-10" },
+     {value:"Before COVID-19", label: "Before COVID-19"},
+     {value:"After COVID-19", label: "After COVID-19"},
+     {value:"2018-10", label: "2018-10"},
+     {value:"2021-04", label: "2021-04"},
+     {value:"2021-05", label: "2021-05"},
     ] 
+    const [dateinput, setDateInput] = useState('')
+    const [dateinput2, setDateInput2] = useState('')
     const [toggleChecked, setToggleChecked] = useState(false);
     const [toggleChecked1, setToggleChecked1] = useState(false);
     const [selectKeyword, setSelectKeyword] = useState(keywordData[0]);
@@ -80,8 +87,10 @@ const AnalyzeDate = () => {
         dateToStringEnd1(endDate1)
         dateToString2(startDate2)
         dateToStringEnd2(endDate2)
+        setDateInput(dateValue1+"~"+endDateValue1)
       },[startDate1, endDate1, startDate2, endDate2])
       let getAverage = async(e) => {
+        //e.preventDefault()
         setLoading(true)
         let response = await fetch('http://127.0.0.1:8000/spotify/get-status-period', {
             method: 'POST',
@@ -95,11 +104,10 @@ const AnalyzeDate = () => {
         })
         let data = await response.json()
         const obj = JSON.parse(data)
-        console.log(obj.averge_status)
-        setAverage1(obj.averge_status)
-        console.log('1',average)
+        console.log("1 average",obj.averge_status)
+        setAverage(obj.averge_status)
         if(response.status === 200){
-            console.log(obj)
+            console.log('1',average)
             setSelectDate(true)
             setTimeout(function() {
               setLoading(false)
@@ -109,6 +117,7 @@ const AnalyzeDate = () => {
         }
       }
       let getAverage1 = async(e) => {
+       // e.preventDefault()
         setLoading1(true)
         let response = await fetch('http://127.0.0.1:8000/spotify/get-status-period', {
             method: 'POST',
@@ -145,18 +154,21 @@ const AnalyzeDate = () => {
         })
         let data = await response.json()
         const obj = JSON.parse(data)
-        console.log(obj.averge_status)
+        console.log(obj)
         if(response.status === 200){
             setAverage(obj.averge_status)
             setSelectDate(true)
-            console.log(average)
+            //console.log(average)
+            console.log('2',average)
             setTimeout(function() {
               setLoading(false)
+              console.log(selectKeyword.value)
             }, 1000);
         }else{
             alert('Login fail')
         }
       }
+      console.log()
       let getKeywordAverage1 = async(e) => {
         let response = await fetch('http://127.0.0.1:8000/spotify/get-status-keyword', {
             method: 'POST',
@@ -164,12 +176,12 @@ const AnalyzeDate = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify([{
-                'keyword': selectKeyword.value
+                'keyword': selectKeyword1.value
             }])
         })
         let data = await response.json()
         const obj = JSON.parse(data)
-        console.log(obj.averge_status)
+        console.log(obj)
         if(response.status === 200){
             setAverage1(obj.averge_status)
             setSelectDate1(true)
@@ -187,6 +199,8 @@ const AnalyzeDate = () => {
       const dateToStringEnd1 = (date) => {
         if(date != null){
           setendDateValue1(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
+          setDateInput(dateValue1+"~"+endDateValue1)
+          console.log(dateinput)
         }
       }
       const dateToString2 = (date) => {
@@ -195,6 +209,7 @@ const AnalyzeDate = () => {
       const dateToStringEnd2 = (date) => {
         if(date != null){
             setendDateValue2(date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0'))
+            setDateInput2(dateValue2+"~"+endDateValue2)
         }
       }
       const getDayName = (date) => {
@@ -225,7 +240,10 @@ const AnalyzeDate = () => {
         <h2 className='a-date-title'>Analysis by date</h2>
         <Row style={{marginBottom: '50px'}}>
             <Col xl={4} md={4}>
-              <InputGroup className="mb-3" onClick={handleShow}>
+              <InputGroup className="mb-3" onClick={()=>{
+                handleShow()
+                setToggleChecked(false)
+              }}>
                 <InputGroup.Text id="inputGroup-sizing-default">
                   First Date
                 </InputGroup.Text>
@@ -233,13 +251,16 @@ const AnalyzeDate = () => {
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
                   placeholder='Click here to search'
-                  value={dateValue2+ '~'+ endDateValue2}
+                  value= {toggleChecked ? selectKeyword.value : dateValue2+"~"+endDateValue2}
                 />
               </InputGroup>
             </Col>
             <Col xl={1} md={1} style={{marginTop:'8px', marginLeft:'80px'}}><p>VS</p></Col>
             <Col xl={4} md={4}>
-              <InputGroup className="mb-3" onClick={handleShow1}>
+              <InputGroup className="mb-3" onClick={()=>{
+                handleShow1()
+                setToggleChecked1(false)
+              }}>
                 <InputGroup.Text id="inputGroup-sizing-default">
                   Second Date
                 </InputGroup.Text>
@@ -247,7 +268,7 @@ const AnalyzeDate = () => {
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
                   placeholder='Click here to search'
-                  value={dateValue1+ '~'+ endDateValue1}
+                  value={toggleChecked1 ? selectKeyword1.value : dateValue1+"~"+endDateValue1}
                 />
               </InputGroup>
             </Col>
@@ -255,13 +276,15 @@ const AnalyzeDate = () => {
               <Button onClick={() =>  {
                 if(toggleChecked){
                   getKeywordAverage()
-                  setToggleChecked(false)
+                  //setToggleChecked(false)
+                  setDateValue2(selectKeyword.value)
                 }else{
                   getAverage() 
                 }
                 if(toggleChecked1){
                   getKeywordAverage1()
-                  setToggleChecked(false)
+                  //setToggleChecked1(false)
+                  setDateValue1(selectKeyword1.value)
                 }else{
                   getAverage1() 
                 }
@@ -284,6 +307,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1} 
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                     />
                     <h4 className='chart-name'>Valence Analysis Chart</h4>
                 </Col>
@@ -297,6 +322,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1}
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                     />
                     <h4 className='chart-name'>Tempo Analysis Chart</h4>
                 </Col>
@@ -312,6 +339,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1}
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                   />
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
@@ -325,6 +354,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1}
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                   />
                     <h4 className='chart-name'>Mode Analysis Chart</h4>
                 </Col>
@@ -340,6 +371,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1}
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                     />
                     <h4 className='chart-name'>Popularity Analysis Chart</h4>
                 </Col>
@@ -353,6 +386,8 @@ const AnalyzeDate = () => {
                       dateval1={dateValue1}
                       toggleChecked={toggleChecked}
                       toggleChecked1={toggleChecked1}
+                      selectKeyword={selectKeyword}
+                      selectKeyword1={selectKeyword1}
                     />
                     <h4 className='chart-name'>Analysis Chart</h4>
                 </Col>
@@ -460,6 +495,7 @@ const AnalyzeDate = () => {
           <Button variant="primary" onClick={ () => {
             handleClose()
             setSelectDateModal(true)
+            setDateInput({dateValue2}+'~'+{endDateValue2})
           }}>
             Save Changes
           </Button>

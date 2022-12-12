@@ -16,6 +16,7 @@ const AnalyzeMusic = (props) => {
   const handleShow = () => setShow(true);
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
+  const [checked, setChecked] = useState(false);
   const [music, setMusic] = useState('')
   const [selectTable, setSelectTable] = useState(false)
   const [musicAnalsisData, setMusicAnalsisData] = useState({
@@ -71,7 +72,9 @@ const AnalyzeMusic = (props) => {
         alert('Login fail')
     }
   }
-  const clicklist = index => {
+  const clicklist = (index, e) => {
+    setChecked(!checked)
+    console.log(checked)
     setMusicAnalsisData({
       title:musicData[index].title,
       artist:musicData[index].artist,
@@ -95,7 +98,12 @@ const AnalyzeMusic = (props) => {
     datasets: [
       {
         label: musicAnalsisData.title,
-        data: [musicAnalsisData.danceability, musicAnalsisData.energy, musicAnalsisData.liveness, musicAnalsisData.valence, musicAnalsisData.acousticness],
+        data: [musicAnalsisData.danceability, 
+          musicAnalsisData.energy, 
+          musicAnalsisData.liveness, 
+          musicAnalsisData.valence, 
+          musicAnalsisData.acousticness
+        ],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
@@ -185,9 +193,13 @@ const AnalyzeMusic = (props) => {
                 {musicData.map((data, index) => (
                   <tr 
                     key={index} 
-                    onClick={()=>clicklist(index)}
                   >
-                    <th><Form.Check type='checkbox'/></th>
+                    <th>
+                      <Form.Check id={index} type='checkbox' onChange={(e)=>{
+                        clicklist(index,e)
+                        }
+                      }/>
+                    </th>
                     <th>{data.title}</th>
                     <th>{data.artist}</th>
                   </tr>

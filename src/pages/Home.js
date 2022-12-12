@@ -69,7 +69,7 @@ const Home = (props) => {
             console.log(top100)
             setTimeout(function() {
               setLoading(false)
-            }, 2000);
+            }, 1000);
         }else{
             alert('Login fail')
         }
@@ -134,23 +134,28 @@ const Home = (props) => {
         <thead>
           <tr>
             <th>Rank</th>
+            <th>Track Image</th>
             <th>Title</th>
             <th>Artist</th>
+            <th>Rank difference (Last Week)</th>
           </tr>
         </thead>
         <tbody>
             {top100MusicRank && top100MusicRank.map((data,index)=>(
               <tr key={index}>
                  <th className='image-table'>
-                   <div style={{marginLeft: '20px'}}>{index+1}</div>
+                   <div style={{marginLeft: '20px', paddingBottom: '40px'}}>{index+1}</div>
+                 </th>
+                 <th>
                    <Image 
                      src={data.images[2].url}
                      rounded
-                     style={{marginLeft: '30px', marginRight:'-30px'}}
+                     style={{marginLeft: '10px', marginRight:'10px'}}
                    />
                  </th>
                  <th>{data.title}</th>
                  <th>{data.artist}</th>
+                 <th>{data.rank_difference}</th>
              </tr>
             ))}
         </tbody>

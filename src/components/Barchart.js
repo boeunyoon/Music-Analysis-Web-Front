@@ -5,6 +5,9 @@ export const Barchart = (props) => {
   useEffect(()=>{
     setOptions(options)
   },[])
+  console.log(props.dateval)
+  console.log(props.dateval1)
+  const [toggle, setToggle] = useState(props.toggleChecked);
   const [options, setOptions] = useState({
       tooltip: {
         trigger: 'item'
